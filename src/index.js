@@ -1,45 +1,49 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import VueResource from 'vue-resource'
+
+import auth from './auth'
+
+import AppComponent from './components/App.vue'
 import HomeComponent from './components/Home.vue'
+import LoginComponent from './components/Login.vue'
+
+// Check the users auth status when the app starts
+auth.checkAuth()
 
 Vue.use(VueRouter)
+Vue.use(VueResource)
 
+Vue.component('app-component', AppComponent)
 Vue.component('home-component', HomeComponent)
+Vue.component('login-component', LoginComponent)
+
+// Optional
+Vue.http.headers.common['Authorization'] = auth.getAuthHeader();
 
 // components
 const Home = { template: '<div><home-component name="Oi" initialEnthusiasm="1"></home-component></div>' }
+const Login = { template: '<login-component/>' }
 const Foo = { template: '<div>foo</div>' }
 const Bar = { template: '<div>bar</div>' }
 
-// 2. Define some routes
-// Each route should map to a component. The "component" can
-// either be an actual component constructor created via
-// `Vue.extend()`, or just a component options object.
-// We'll talk about nested routes later.
+// rotas
 const routes = [
     { path: '/', component: Home },
+    { path: '/login', component: Login, meta: { auth: false } },
     { path: '/foo', component: Foo },
-    { path: '/bar', component: Bar }
+    { path: '/bar', component: Bar },
+    { path: '/*', component: Home, redirect: '/home' }
 ]
 
-// 3. Create the router instance and pass the `routes` option
-// You can pass in additional options here, but let's
-// keep it simple for now.
 const router = new VueRouter({
-    routes // short for `routes: routes`
+    routes
 })
 
-// 4. Create and mount the root instance.
-// Make sure to inject the router with the router option to make the
-// whole app router-aware.
-// const app = new Vue({
-//     router
-// }).$mount('#app')
+Vue.router = router
 
 const app = new Vue({
     el: "#app",
-    router,
-    data: { name: "World" }
+    template: '<app-component/>',
+    router
 })
-
-// Now the app has started!

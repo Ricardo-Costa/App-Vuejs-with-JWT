@@ -4,6 +4,8 @@ var favicon = require('serve-favicon')
 var logger = require('morgan')
 var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser')
+var expressJWT = require('express-jwt')
+var jwt = require('jsonwebtoken')
 
 var index = require('./routes/index')
 var users = require('./routes/users')
@@ -27,6 +29,9 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
+
+// todo https://github.com/auth0/express-jwt
+app.use(expressJWT({ secret: 'my test' }).unless({ path: [ '/login' ] }))
 
 app.use('/', index)
 app.use('/users', users)
