@@ -1,9 +1,10 @@
-import { router } from '../index'
+import VueRouter from 'vue-router'
+var router = new VueRouter()
 
 // URL and endpoint constants
 const API_URL = 'http://localhost:3001/'
-const LOGIN_URL = API_URL + 'sessions/create/'
-const SIGNUP_URL = API_URL + 'users/'
+const LOGIN_URL = API_URL + 'login'
+const SIGNUP_URL = API_URL + 'users'
 
 export default {
 
@@ -12,22 +13,20 @@ export default {
         authenticated: false
     },
 
-    // Send a request to the login URL and save the returned JWT
-    login(context, creds, redirect) {
-        context.$http.post(LOGIN_URL, creds, (data) => {
-            localStorage.setItem('id_token', data.id_token)
-            localStorage.setItem('access_token', data.access_token)
+    // requisitar autenticação e salvar JWT retornado se sucesso
+    login(context, loginData) {
+        context.$http.post(LOGIN_URL, loginData).then(response => {
+
+            localStorage.setItem('id_token', response.id_token)
+            localStorage.setItem('access_token', response.access_token)
 
             this.user.authenticated = true
+            // redirecionar após sucesso do login
+            router.go('home')
 
-            // Redirect to a specified route
-            if (redirect) {
-                router.go(redirect)
-            }
-
-        }).error((err) => {
-            context.error = err
-        })
+        }, response => {
+            console.log('Erro na autenticação do usuário...')
+        });
     },
 
     signup(context, creds, redirect) {
@@ -51,16 +50,12 @@ export default {
         localStorage.removeItem('id_token')
         localStorage.removeItem('access_token')
         this.user.authenticated = false
+        router.go('home')
     },
 
     checkAuth() {
         var jwt = localStorage.getItem('id_token')
-        if (jwt) {
-            this.user.authenticated = true
-        }
-        else {
-            this.user.authenticated = false
-        }
+        this.user.authenticated = !!jwt
     },
 
     // The object to be passed as a header for authenticated requests

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <nav class="navbar navbar-default" style="color: #111111 !important;">
+        <nav class="navbar navbar-default">
             <div class="container">
                 <ul class="nav navbar-nav">
                     <li>
@@ -18,7 +18,7 @@
                         <router-link to="/login" v-if="!user.authenticated">Login</router-link>
                     </li>
                     <li>
-                        <router-link to="/login" @click="logout()" v-if="user.authenticated">Logout</router-link>
+                        <a @click="logout()" v-if="user.authenticated">Logout</a>
                     </li>
                 </ul>
             </div>
@@ -33,13 +33,13 @@
     import auth from '../auth'
 
     export default {
-        data() {
+        data: function() {
             return {
                 user: auth.user
             }
         },
         methods: {
-            logout() {
+            logout: function() {
                 auth.logout()
             }
         }

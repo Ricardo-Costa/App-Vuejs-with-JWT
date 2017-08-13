@@ -46,8 +46,8 @@
         data: function () {
             return {
                 credentials: {
-                    email: '',
-                    password: ''
+                    email: 'ricardo@mail.com',
+                    password: 'testeteste'
                 },
                 error: ''
             }
@@ -55,13 +55,15 @@
 
         methods: {
             submit: function () {
-                var credentials = {
-                    email: this.credentials.email,
-                    password: this.credentials.password
+
+                // validação básica de inputs
+                if (!this.credentials.email || !this.credentials.password) {
+                    alert('Error, fill the inputs...');
+                    return false;
                 }
-                // We need to pass the component's this context
-                // to properly make use of http in the auth service
-                auth.login(this, credentials, 'secretquote')
+
+                // logar
+                auth.login(this, { email: this.credentials.email, password: this.credentials.password })
             }
         }
 
