@@ -16,21 +16,22 @@ auth.checkAuth()
 Vue.use(VueRouter)
 Vue.use(VueResource)
 
+export var router
+
 Vue.component('app-component', AppComponent)
 Vue.component('login-component', LoginPage)
 
 // rotas
-const routes = [
-    { path: '/', component: LoginPage, meta: { auth: false }},
+var routes = [
+    { path: '/', component: HomePage, meta: { auth: false }},
+    { path: '/login', component: LoginPage, meta: { auth: false }},
     { path: '/home', component: HomePage },
     { path: '/*', component: HomePage, redirect: '/home' }
 ]
 
-const router = new VueRouter({
+router = new VueRouter({
     routes
 })
-
-Vue.router = router
 
 const app = new Vue({
     el: "#app",
