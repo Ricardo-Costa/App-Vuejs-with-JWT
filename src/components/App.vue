@@ -1,13 +1,25 @@
 <template>
     <div>
-        <nav class="navbar navbar-default">
+        <nav class="navbar navbar-default" style="color: #111111 !important;">
             <div class="container">
                 <ul class="nav navbar-nav">
-                    <router-link to="/">Home</router-link>
-                    <router-link to="/login" v-if="!user.authenticated">Login</router-link>
-                    <router-link to="/login" @click="logout()" v-if="user.authenticated">Logout</router-link>
-                    <router-link to="/foo">Foo</router-link>
-                    <router-link to="/bar">Bar</router-link>
+                    <li>
+                        <router-link to="/">Home</router-link>
+                    </li>
+                    <li>
+                        <router-link to="/foo">Foo</router-link>
+                    </li>
+                    <li>
+                        <router-link to="/bar">Bar</router-link>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav pull-right">
+                    <li>
+                        <router-link to="/login" v-if="!user.authenticated">Login</router-link>
+                    </li>
+                    <li>
+                        <router-link to="/login" @click="logout()" v-if="user.authenticated">Logout</router-link>
+                    </li>
                 </ul>
             </div>
         </nav>
