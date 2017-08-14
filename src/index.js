@@ -19,6 +19,32 @@ Vue.use(Vuex)
 Vue.use(VueRouter)
 Vue.use(VueResource)
 
+// TODO if (checkAuth) { }
+Vue.http.headers.common['Authorization'] = auth.getAuthHeader();
+
+// Vue.http.interceptors.push((request, next) => {
+//
+//     request.headers['Authorization'] = auth.getAuthHeader()
+//     request.headers['Accept'] = 'application/vnd.mob.v1+json'
+//     request.emulateJSON = true;
+//     next()
+//
+// }//, (response, next) => {
+// //     if( response.headers('Auth-Token') ) {
+// //       auth.actions.setToken( response.headers('Auth-Token') );
+// //     }
+// //
+// //     if( response.status == 500 ) {
+// //       if( response.data.message == 'Token has expired, but is still valid.' ) {
+// //         console.log('RETRY', response);
+// //       } else {
+// //         alert('Whoops, an unknown error occured.');
+// //       }
+// //     }
+// //     next()
+// // }
+// )
+
 Vue.component('app-component', AppComponent)
 Vue.component('login-component', LoginPage)
 

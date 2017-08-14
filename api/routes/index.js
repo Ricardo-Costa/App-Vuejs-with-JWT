@@ -10,8 +10,16 @@ router.get('/', function(req, res, next) {
 router.post('/login', function(req, res, next) {
     if (req.body.email && req.body.password) {
         var myToken = jwt.sign({ email: req.body.email }, 'my test');
-        // res.status(200).json({ message: 'User was authenticated.' })
-        res.status(200).json(myToken)
+
+        if (myToken) {
+            res.status(200).json({
+                token: myToken,
+                message: 'User was authenticated.'
+            })
+        } else {
+            res.status(400).json({ message: 'Invalid User.' })
+        }
+
     } else {
         res.status(400).json({ message: 'Invalid User.' })
     }

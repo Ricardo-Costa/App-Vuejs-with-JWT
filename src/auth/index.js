@@ -15,37 +15,38 @@ export default {
 
     // requisitar autenticação e salvar JWT retornado se sucesso
     login(context, loginData) {
-        context.$http.post(LOGIN_URL, loginData).then(response => {
+        var self = this
 
-            localStorage.setItem('id_token', response.id_token)
-            localStorage.setItem('access_token', response.access_token)
+        context.$http.post(LOGIN_URL, loginData).then(function (data) {
+            // verificacao
+            if (data.body.token) {
+                localStorage.setItem('token', data.body.token)
+                console.log('Nova sessao');
+            } else {
+                console.log('Error ao salvar sessao');
+            }
 
-            this.user.authenticated = true
+            self.user.authenticated = true
             // redirecionar após sucesso do login
             router.push('/home')
 
-        }, response => {
-            console.log('Erro na autenticação do usuário...')
         });
     },
 
     // To log out, we just need to remove the token
     logout() {
-        localStorage.removeItem('id_token')
-        localStorage.removeItem('access_token')
+        localStorage.removeItem('token')
         this.user.authenticated = false
         router.push('/login')
     },
 
     checkAuth() {
-        var jwt = localStorage.getItem('id_token')
+        var jwt = localStorage.getItem('token')
         this.user.authenticated = !!jwt
     },
 
     // The object to be passed as a header for authenticated requests
     getAuthHeader() {
-        return {
-            'Authorization': 'Bearer ' + localStorage.getItem('access_token')
-        }
+        return 'Bearer ' + localStorage.getItem('token')
     }
 }
